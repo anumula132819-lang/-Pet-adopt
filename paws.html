@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paws & Home — Premium Pet Adoption</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── DESIGN TOKENS (Untitled UI inspired) ─── */
+:root {
+  --white:       #FFFFFF;
+  --gray-25:     #FCFCFD;
+  --gray-50:     #F9FAFB;
+  --gray-100:    #F2F4F7;
+  --gray-200:    #EAECF0;
+  --gray-300:    #D0D5DD;
+  --gray-400:    #98A2B3;
+  --gray-500:    #667085;
+  --gray-600:    #475467;
+  --gray-700:    #344054;
+  --gray-800:    #1D2939;
+  --gray-900:    #101828;
+
+  --warm-25:     #FFFDF7;
+  --warm-50:     #FFF8ED;
+  --warm-100:    #FDEFD4;
+  --warm-200:    #F9DCAB;
+  --warm-300:    #F4C27A;
+  --warm-400:    #ED9F44;
+  --warm-500:    #E07D1A;
+  --warm-600:    #C45F0F;
+  --warm-700:    #9C430A;
+
+  --success-50:  #ECFDF3;
+  --success-600: #039855;
+  --success-700: #027A48;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(16,24,40,.05);
+  --shadow-sm: 0 1px 3px rgba(16,24,40,.10), 0 1px 2px rgba(16,24,40,.06);
+  --shadow-md: 0 4px 8px -2px rgba(16,24,40,.10), 0 2px 4px -2px rgba(16,24,40,.06);
+  --shadow-lg: 0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.03);
+  --shadow-xl: 0 20px 24px -4px rgba(16,24,40,.08), 0 8px 8px -4px rgba(16,24,40,.03);
+
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-serif: 'IBM Plex Serif', serif;
+  
+
+  --transition: 200ms cubic-bezier(.4,0,.2,1);
+  --transition-slow: 400ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-700);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; width: 100%; object-fit: cover; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button, input, select, textarea { font-family: inherit; }
+
+/* ─── UTILITY ─── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ─── TYPOGRAPHY SCALE ─── */
+.display-2xl { font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; color: var(--gray-900); }
+.display-xl  { font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; color: var(--gray-900); }
+.display-lg  { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.015em; color: var(--gray-900); }
+.display-md  { font-size: clamp(1.375rem, 2.5vw, 1.875rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; color: var(--gray-900); }
+.text-xl     { font-size: 1.25rem; line-height: 1.75; }
+.text-lg     { font-size: 1.125rem; line-height: 1.7; }
+.text-md     { font-size: 1rem; line-height: 1.6; }
+.text-sm     { font-size: 0.875rem; line-height: 1.5; }
+.text-xs     { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.02em; }
+.serif       { font-family: var(--font-serif); }
+
+/* ─── HEADER ─── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-100);
+  transition: box-shadow var(--transition);
+}
+.header.scrolled { box-shadow: var(--shadow-sm); }
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+.logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1.125rem; font-weight: 600; color: var(--gray-900); letter-spacing: -0.01em;
+}
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--gray-900); display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 500; color: var(--gray-600);
+  transition: color var(--transition), background var(--transition);
+}
+.nav-link:hover { color: var(--gray-900); background: var(--gray-50); }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; cursor: pointer; font-weight: 500; transition: all var(--transition);
+  white-space: nowrap; position: relative; overflow: hidden;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0); transition: background var(--transition);
+}
+.btn:hover::after { background: rgba(255,255,255,.08); }
+
+.btn-xs  { padding: 6px 12px; font-size: 0.75rem; border-radius: var(--radius-sm); }
+.btn-sm  { padding: 8px 14px; font-size: 0.875rem; border-radius: var(--radius-sm); }
+.btn-md  { padding: 10px 18px; font-size: 0.9rem; border-radius: var(--radius-md); }
+.btn-lg  { padding: 12px 20px; font-size: 1rem; border-radius: var(--radius-md); }
+.btn-xl  { padding: 14px 24px; font-size: 1.0625rem; border-radius: var(--radius-md); }
+.btn-2xl { padding: 18px 32px; font-size: 1.125rem; border-radius: var(--radius-lg); }
+
+.btn-primary {
+  background: var(--gray-900); color: var(--white);
+  box-shadow: var(--shadow-xs);
+}
+.btn-primary:hover { background: var(--gray-800); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+.btn-secondary-gray {
+  background: var(--white); color: var(--gray-700);
+  border: 1px solid var(--gray-300); box-shadow: var(--shadow-xs);
+}
+.btn-secondary-gray:hover { background: var(--gray-50); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+.btn-warm {
+  background: var(--warm-500); color: var(--white);
+  box-shadow: 0 1px 2px rgba(224,125,26,.20);
+}
+.btn-warm:hover { background: var(--warm-600); box-shadow: 0 4px 12px rgba(224,125,26,.30); transform: translateY(-1px); }
+
+.btn-ghost { background: transparent; color: var(--gray-700); }
+.btn-ghost:hover { background: var(--gray-100); color: var(--gray-900); }
+.btn-ghost::after { display: none; }
+
+.btn-link { background: transparent; color: var(--warm-600); padding: 0; font-weight: 500; }
+.btn-link:hover { color: var(--warm-700); }
+.btn-link::after { display: none; }
+
+/* ─── BADGE ─── */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 10px; border-radius: var(--radius-full); font-weight: 500;
+}
+.badge-gray-modern { background: var(--gray-100); color: var(--gray-700); font-size: 0.75rem; }
+.badge-success { background: var(--success-50); color: var(--success-700); font-size: 0.75rem; }
+.badge-warm { background: var(--warm-50); color: var(--warm-700); font-size: 0.75rem; }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ─── DIVIDER ─── */
+.divider { height: 1px; background: var(--gray-200); }
+
+/* ─── HERO ─── */
+.hero {
+  padding-top: 72px;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero-content {
+  padding: 80px 24px 80px 48px;
+  max-width: 600px;
+  animation: fadeUp .8s ease both;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 24px;
+}
+.hero-eyebrow-line { width: 32px; height: 1px; background: var(--warm-400); }
+.hero-eyebrow-text { font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-600); }
+
+.hero-title { margin-bottom: 24px; }
+.hero-title .serif { color: var(--warm-600); font-style: italic; }
+
+.hero-subtitle {
+  max-width: 440px; margin-bottom: 40px;
+  font-size: 1.0625rem; line-height: 1.7; color: var(--gray-500); font-weight: 300;
+}
+
+.hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
+
+.hero-stats { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.hero-stat-item { text-align: left; }
+.hero-stat-num {
+  font-size: 1.5rem; font-weight: 600; color: var(--gray-900);
+  letter-spacing: -0.02em; line-height: 1;
+}
+.hero-stat-label { font-size: 0.8125rem; color: var(--gray-500); margin-top: 2px; }
+.hero-stat-divider { width: 1px; height: 36px; background: var(--gray-200); }
+
+.hero-visual {
+  position: relative; height: 100svh;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 6px; padding: 78px 24px 0 6px;
+  animation: fadeIn .8s ease .2s both;
+}
+.hero-img-main {
+  grid-column: 1 / 2; grid-row: 1 / 3;
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  overflow: hidden; position: relative;
+}
+.hero-img-top {
+  grid-column: 2; grid-row: 1;
+  border-radius: 0 var(--radius-xl) 0 0;
+  overflow: hidden;
+}
+.hero-img-bottom {
+  grid-column: 2; grid-row: 2;
+  overflow: hidden; position: relative;
+}
+.hero-img-main img, .hero-img-top img, .hero-img-bottom img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+.hero-img-main:hover img, .hero-img-top:hover img, .hero-img-bottom:hover img {
+  transform: scale(1.04);
+}
+.hero-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.35) 0%, transparent 60%);
+}
+.hero-img-label {
+  position: absolute; bottom: 16px; left: 16px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+  padding: 6px 12px; border-radius: var(--radius-sm);
+  font-size: 0.8rem; font-weight: 500; color: var(--gray-800);
+}
+
+/* ─── SEARCH BAR ─── */
+.search-section {
+  background: var(--white);
+  padding: 0 24px;
+  margin-top: -28px;
+  position: relative; z-index: 10;
+  display: none !important;
+}
+.search-card {
+  max-width: 1200px; margin: 0 auto;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: 28px 32px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px; align-items: end;
+}
+.search-field { display: flex; flex-direction: column; gap: 6px; }
+.search-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gray-500); }
+.search-input-wrap { position: relative; }
+.search-input-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--gray-400); pointer-events: none; display: flex;
+}
+.search-input {
+  width: 100%; padding: 10px 12px 10px 38px;
+  border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.9375rem; color: var(--gray-900); background: var(--gray-50);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  outline: none;
+}
+.search-input:focus {
+  border-color: var(--gray-900); background: var(--white);
+  box-shadow: 0 0 0 4px rgba(16,24,40,.06);
+}
+.search-input::placeholder { color: var(--gray-400); }
+.search-select {
+  width: 100%; padding: 10px 12px 10px 38px;
+  border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.9375rem; color: var(--gray-900); background: var(--gray-50);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none; appearance: none; cursor: pointer;
+}
+.search-select:focus {
+  border-color: var(--gray-900); background: var(--white);
+  box-shadow: 0 0 0 4px rgba(16,24,40,.06);
+}
+.search-divider { width: 1px; background: var(--gray-200); align-self: stretch; margin: 0 8px; }
+
+/* ─── SECTION SPACING ─── */
+.section { padding: 96px 0; }
+.section-sm { padding: 64px 0; }
+.section-header { max-width: 640px; margin-bottom: 56px; }
+.section-header-centered { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--warm-600);
+}
+.section-title { margin-bottom: 16px; }
+.section-subtitle { font-size: 1rem; color: var(--gray-500); font-weight: 300; line-height: 1.7; }
+
+/* ─── FEATURED PETS ─── */
+.pets-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.pets-grid-wide { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+
+/* ─── PET CARD ─── */
+.pet-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow), border-color var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.pet-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  border-color: var(--gray-300);
+}
+.pet-card-img-wrap {
+  aspect-ratio: 4/3; overflow: hidden; position: relative;
+}
+.pet-card-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+.pet-card:hover .pet-card-img-wrap img { transform: scale(1.06); }
+.pet-card-favorite {
+  position: absolute; top: 12px; right: 12px;
+  width: 36px; height: 36px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,.9); backdrop-filter: blur(4px);
+  border: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0;
+  transition: opacity var(--transition), background var(--transition);
+}
+.pet-card:hover .pet-card-favorite { opacity: 1; }
+.pet-card-favorite:hover { background: var(--white); }
+.pet-card-tag {
+  position: absolute; top: 12px; left: 12px;
+}
+.pet-card-body { padding: 18px 20px 20px; }
+.pet-card-meta {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;
+}
+.pet-card-name { font-size: 1.0625rem; font-weight: 600; color: var(--gray-900); letter-spacing: -0.01em; }
+.pet-card-breed { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 14px; }
+.pet-card-attrs {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.pet-attr-chip {
+  padding: 3px 10px; background: var(--gray-100); border-radius: var(--radius-full);
+  font-size: 0.75rem; color: var(--gray-600); font-weight: 500;
+}
+.pet-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid var(--gray-100);
+}
+.pet-card-location {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.8125rem; color: var(--gray-400);
+}
+
+/* ─── CATEGORIES ─── */
+.categories-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.category-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-slow);
+  position: relative; overflow: hidden;
+}
+.category-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gray-900); opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+.category-card:hover::before { opacity: 1; }
+.category-card:hover .category-icon, .category-card:hover .category-name, .category-card:hover .category-count { color: var(--white); position: relative; z-index: 1; }
+.category-icon {
+  font-size: 2.5rem; margin-bottom: 12px;
+  transition: transform var(--transition-slow);
+  display: block; position: relative; z-index: 1;
+}
+.category-card:hover .category-icon { transform: scale(1.15) rotate(-5deg); }
+.category-name {
+  font-size: 1rem; font-weight: 600; color: var(--gray-900); margin-bottom: 4px;
+  transition: color var(--transition-slow); position: relative; z-index: 1;
+}
+.category-count {
+  font-size: 0.8125rem; color: var(--gray-500);
+  transition: color var(--transition-slow); position: relative; z-index: 1;
+}
+
+/* ─── STATS / TRUST SECTION ─── */
+.trust-section { background: var(--gray-900); color: var(--white); }
+.trust-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--gray-700);
+}
+.trust-item {
+  background: var(--gray-900);
+  padding: 56px 40px;
+  text-align: center;
+  transition: background var(--transition);
+}
+.trust-item:hover { background: var(--gray-800); }
+.trust-num {
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 600;
+  color: var(--white); letter-spacing: -0.03em; line-height: 1;
+  margin-bottom: 8px;
+}
+.trust-num-accent { color: var(--warm-400); }
+.trust-label { font-size: 0.875rem; color: var(--gray-400); line-height: 1.5; }
+
+/* ─── PROCESS / HOW IT WORKS ─── */
+.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.process-item {
+  padding: 32px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  background: var(--white);
+  position: relative;
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
+}
+.process-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.process-item::after {
+  content: '';
+  position: absolute; top: 48px; right: -13px;
+  width: 24px; height: 2px;
+  background: var(--gray-200);
+}
+.process-item:last-child::after { display: none; }
+.process-num {
+  width: 40px; height: 40px; border-radius: var(--radius-md);
+  background: var(--gray-900); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem; font-weight: 600; margin-bottom: 20px;
+}
+.process-title { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin-bottom: 10px; }
+.process-desc { font-size: 0.875rem; color: var(--gray-500); line-height: 1.65; }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testimonial-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
+}
+.testimonial-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.testimonial-stars { color: var(--warm-400); font-size: 0.875rem; letter-spacing: 2px; margin-bottom: 20px; }
+.testimonial-quote {
+  font-size: 0.9375rem; color: var(--gray-700); line-height: 1.7;
+  margin-bottom: 24px; font-style: italic; font-family: var(--font-serif); font-weight: 300;
+}
+.testimonial-divider { height: 1px; background: var(--gray-200); margin-bottom: 20px; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--gray-200); overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.testimonial-name { font-size: 0.875rem; font-weight: 600; color: var(--gray-900); }
+.testimonial-detail { font-size: 0.8125rem; color: var(--gray-500); }
+
+/* ─── MISSION STRIP ─── */
+.mission-strip {
+  background: var(--warm-50); border-top: 1px solid var(--warm-100); border-bottom: 1px solid var(--warm-100);
+  padding: 72px 0;
+}
+.mission-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.mission-content { }
+.mission-visual {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.mission-img {
+  border-radius: var(--radius-lg); overflow: hidden;
+  aspect-ratio: 4/5;
+}
+.mission-img:first-child { margin-top: 32px; }
+.mission-img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-slow); }
+.mission-img:hover img { transform: scale(1.04); }
+
+/* ─── FILTER BAR ─── */
+.filter-section { padding: 32px 0 0; }
+.filter-bar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding-bottom: 32px; border-bottom: 1px solid var(--gray-200);
+}
+.filter-label { font-size: 0.875rem; font-weight: 600; color: var(--gray-700); margin-right: 4px; }
+.filter-chip {
+  padding: 8px 16px; border-radius: var(--radius-full);
+  border: 1px solid var(--gray-300); background: var(--white);
+  font-size: 0.875rem; color: var(--gray-600); cursor: pointer;
+  transition: all var(--transition); font-weight: 500;
+}
+.filter-chip:hover { border-color: var(--gray-900); color: var(--gray-900); }
+.filter-chip.active { background: var(--gray-900); color: var(--white); border-color: var(--gray-900); }
+.filter-select-wrap {
+  position: relative; margin-left: auto;
+}
+.filter-select {
+  padding: 8px 32px 8px 14px;
+  border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.875rem; color: var(--gray-700); background: var(--white);
+  cursor: pointer; outline: none; appearance: none;
+  transition: border-color var(--transition);
+}
+.filter-select:focus { border-color: var(--gray-900); }
+
+/* ─── MODAL ─── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--transition-slow);
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--white); border-radius: var(--radius-xl);
+  max-width: 860px; width: 100%; max-height: 90svh; overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  transform: scale(.96) translateY(8px);
+  transition: transform var(--transition-slow);
+}
+.modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.modal-gallery { position: sticky; top: 0; height: fit-content; }
+.modal-img-main { aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-xl) 0 0 0; }
+.modal-img-main img { width: 100%; height: 100%; object-fit: cover; }
+.modal-img-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; }
+.modal-img-thumb { aspect-ratio: 1; overflow: hidden; cursor: pointer; }
+.modal-img-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity var(--transition); }
+.modal-img-thumb:hover img { opacity: .8; }
+.modal-body { padding: 32px; }
+.modal-close {
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  width: 36px; height: 36px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,.9); backdrop-filter: blur(4px);
+  border: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.25rem; color: var(--gray-600);
+  transition: background var(--transition), color var(--transition);
+}
+.modal-close:hover { background: var(--white); color: var(--gray-900); }
+.modal-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.modal-traits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 20px 0; }
+.modal-trait {
+  padding: 12px; background: var(--gray-50); border-radius: var(--radius-md);
+  border: 1px solid var(--gray-100);
+}
+.modal-trait-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-400); font-weight: 600; }
+.modal-trait-value { font-size: 0.9375rem; font-weight: 600; color: var(--gray-900); margin-top: 2px; }
+.modal-story { font-size: 0.9rem; color: var(--gray-600); line-height: 1.75; margin: 20px 0; font-family: var(--font-serif); font-style: italic; }
+.modal-cta { display: flex; gap: 10px; margin-top: 24px; }
+
+/* ─── ADOPTION FORM ─── */
+.form-section { background: var(--gray-25); }
+.adoption-form {
+  max-width: 680px; margin: 0 auto;
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl); padding: 40px;
+  box-shadow: var(--shadow-sm);
+}
+.progress-bar-wrap { margin-bottom: 40px; }
+.progress-steps { display: flex; align-items: center; gap: 0; margin-bottom: 8px; }
+.progress-step {
+  flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;
+}
+.progress-step:not(:last-child)::after {
+  content: ''; position: absolute; top: 15px; left: 50%; right: -50%;
+  height: 2px; background: var(--gray-200); z-index: 0;
+}
+.progress-step.completed::after { background: var(--gray-900); }
+.progress-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--gray-300);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 600; color: var(--gray-400); z-index: 1;
+  transition: all var(--transition);
+}
+.progress-step.active .progress-dot { border-color: var(--gray-900); background: var(--gray-900); color: var(--white); }
+.progress-step.completed .progress-dot { border-color: var(--gray-900); background: var(--gray-900); color: var(--white); }
+.progress-step-label { font-size: 0.75rem; color: var(--gray-500); margin-top: 6px; text-align: center; }
+.progress-step.active .progress-step-label { color: var(--gray-900); font-weight: 600; }
+
+.form-fieldset { display: none; }
+.form-fieldset.active { display: block; animation: fadeUp .4s ease; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label { font-size: 0.875rem; font-weight: 500; color: var(--gray-700); }
+.form-hint { font-size: 0.8125rem; color: var(--gray-500); }
+.form-input {
+  padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.9375rem; color: var(--gray-900); background: var(--white);
+  outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-input:focus { border-color: var(--gray-900); box-shadow: 0 0 0 4px rgba(16,24,40,.06); }
+.form-input::placeholder { color: var(--gray-400); }
+.form-select {
+  padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.9375rem; color: var(--gray-900); background: var(--white);
+  outline: none; appearance: none; cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-select:focus { border-color: var(--gray-900); box-shadow: 0 0 0 4px rgba(16,24,40,.06); }
+.form-textarea {
+  padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);
+  font-size: 0.9375rem; color: var(--gray-900); background: var(--white);
+  outline: none; resize: vertical; min-height: 100px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-textarea:focus { border-color: var(--gray-900); box-shadow: 0 0 0 4px rgba(16,24,40,.06); }
+.form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+
+/* ─── FOOTER ─── */
+.footer { background: var(--gray-900); color: var(--gray-300); padding: 64px 0 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+.footer-brand { }
+.footer-logo { margin-bottom: 16px; }
+.footer-brand p { font-size: 0.875rem; line-height: 1.7; color: var(--gray-400); max-width: 280px; margin-bottom: 24px; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social-link {
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  background: var(--gray-800); border: 1px solid var(--gray-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem; color: var(--gray-400);
+  transition: all var(--transition);
+}
+.footer-social-link:hover { background: var(--gray-700); color: var(--white); }
+.footer-col-title { font-size: 0.875rem; font-weight: 600; color: var(--white); margin-bottom: 16px; }
+.footer-col-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-link { font-size: 0.875rem; color: var(--gray-400); transition: color var(--transition); }
+.footer-link:hover { color: var(--white); }
+.footer-bottom {
+  padding-top: 32px; border-top: 1px solid var(--gray-800);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-bottom p { font-size: 0.8125rem; color: var(--gray-500); }
+.footer-bottom-links { display: flex; gap: 24px; }
+
+/* ─── NOTICE BANNER ─── */
+.notice-banner {
+  background: var(--gray-900); color: var(--white);
+  padding: 12px 24px; text-align: center;
+  font-size: 0.8125rem; letter-spacing: 0.03em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.notice-badge { background: var(--warm-500); color: var(--white); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+
+/* ─── PAGE SECTIONS ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── SKELETON LOADER ─── */
+.skeleton { background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-50) 50%, var(--gray-100) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-md); }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ─── SCROLL ANIMATION ─── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── SUCCESS STATE ─── */
+.success-state { text-align: center; padding: 48px 0; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--success-50); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 2rem; }
+
+/* ─── EMPTY / ABOUT ─── */
+.about-hero { background: var(--gray-900); color: var(--white); padding: 160px 0 80px; }
+.shelters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.shelter-card { border: 1px solid var(--gray-200); border-radius: var(--radius-xl); padding: 28px; transition: box-shadow var(--transition-slow); }
+.shelter-card:hover { box-shadow: var(--shadow-lg); }
+.shelter-logo { width: 48px; height: 48px; background: var(--gray-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-visual { display: none; }
+  .hero-content { padding: 120px 24px 64px; max-width: 100%; }
+  .pets-grid { grid-template-columns: repeat(2, 1fr); }
+  .pets-grid-wide { grid-template-columns: repeat(2, 1fr); }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-item::after { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .search-card { grid-template-columns: 1fr 1fr; }
+  .search-divider { display: none; }
+  .modal-grid { grid-template-columns: 1fr; }
+  .mission-inner { grid-template-columns: 1fr; gap: 40px; }
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .nav { display: none; }
+  .pets-grid, .pets-grid-wide { grid-template-columns: 1fr; }
+  .categories-grid { grid-template-columns: 1fr 1fr; }
+  .trust-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .search-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NOTICE BANNER -->
+<div class="notice-banner">
+  <span class="notice-badge">New</span>
+  Over 2,400 pets found their forever homes this month — <a href="#" style="color:var(--warm-300);margin-left:4px;font-weight:500;">See stories ↗</a>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#" class="logo" onclick="showPage('home')">
+      <div class="logo-mark">🐾</div>
+      Paws & Home
+    </a>
+    <nav class="nav">
+      <a href="#" class="nav-link" onclick="showPage('listings')">Find a Pet</a>
+      <a href="#" class="nav-link" onclick="showPage('about')">About Us</a>
+      <a href="#" class="nav-link" onclick="showPage('adopt')">Adopt</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-secondary-gray btn-sm" onclick="showPage('listings')">Browse Pets</button>
+      <button class="btn btn-primary btn-sm" onclick="showPage('adopt')">Start Adoption</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<main id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        <span class="hero-eyebrow-text">Premium Pet Adoption</span>
+      </div>
+      <h1 class="display-2xl hero-title">
+        Give them a home.<br>
+        <span class="serif">Find your companion.</span>
+      </h1>
+      <p class="hero-subtitle">Every pet deserves a loving home. We connect caring individuals with animals who are ready to become your lifelong companion.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-xl" onclick="showPage('listings')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Find Your Pet
+        </button>
+        <button class="btn btn-secondary-gray btn-xl" onclick="showPage('about')">Our Mission</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">12,400+</div>
+          <div class="hero-stat-label">Pets adopted</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">98%</div>
+          <div class="hero-stat-label">Happy families</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">240+</div>
+          <div class="hero-stat-label">Partner shelters</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-main">
+        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80" alt="Golden Retriever">
+        <div class="hero-img-overlay"></div>
+        <div class="hero-img-label">🐕 Golden Retriever · 2 yrs</div>
+      </div>
+      <div class="hero-img-top">
+        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&q=80" alt="Tabby Cat">
+        <div class="hero-img-overlay"></div>
+        <div class="hero-img-label">🐈 Tabby Cat · 3 yrs</div>
+      </div>
+      <div class="hero-img-bottom">
+        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&q=80" alt="Border Collie">
+        <div class="hero-img-overlay"></div>
+        <div class="hero-img-label">🐕 Border Collie · 1 yr</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <div class="search-section">
+    <div class="search-card">
+      <div class="search-field">
+        <label class="search-label">Location</label>
+        <div class="search-input-wrap">
+          <span class="search-input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <input type="text" class="search-input" placeholder="City, state, or zip">
+        </div>
+      </div>
+      <div class="search-field">
+        <label class="search-label">Pet Type</label>
+        <div class="search-input-wrap">
+          <span class="search-input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </span>
+          <select class="search-select">
+            <option value="">All Animals</option>
+            <option>Dogs</option>
+            <option>Cats</option>
+            <option>Rabbits</option>
+            <option>Birds</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="search-field">
+        <label class="search-label">Breed</label>
+        <div class="search-input-wrap">
+          <span class="search-input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </span>
+          <input type="text" class="search-input" placeholder="Any breed">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-xl" onclick="showPage('listings')" style="white-space:nowrap;height:44px;margin-top:22px;">
+        Search Pets
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header-centered reveal">
+        <span class="section-eyebrow">Browse by Type</span>
+        <h2 class="display-lg section-title">Find your perfect match</h2>
+        <p class="section-subtitle">Whether you're a dog person, a cat lover, or open to something unexpected — we have companions for every kind of home.</p>
+      </div>
+      <div class="categories-grid reveal">
+        <div class="category-card" onclick="showPage('listings')">
+          <span class="category-icon">🐕</span>
+          <div class="category-name">Dogs</div>
+          <div class="category-count">840 available</div>
+        </div>
+        <div class="category-card" onclick="showPage('listings')">
+          <span class="category-icon">🐈</span>
+          <div class="category-name">Cats</div>
+          <div class="category-count">620 available</div>
+        </div>
+        <div class="category-card" onclick="showPage('listings')">
+          <span class="category-icon">🐰</span>
+          <div class="category-name">Rabbits</div>
+          <div class="category-count">124 available</div>
+        </div>
+        <div class="category-card" onclick="showPage('listings')">
+          <span class="category-icon">🐦</span>
+          <div class="category-name">Others</div>
+          <div class="category-count">210 available</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PETS -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header reveal" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:100%;margin-bottom:40px;">
+        <div>
+          <span class="section-eyebrow">Featured Pets</span>
+          <h2 class="display-lg section-title" style="margin-bottom:0;">Ready to meet you</h2>
+        </div>
+        <button class="btn btn-secondary-gray btn-md" onclick="showPage('listings')">View all pets →</button>
+      </div>
+      <div class="pets-grid reveal" id="featured-pets"></div>
+    </div>
+  </section>
+
+  <!-- TRUST STATS -->
+  <section class="trust-section">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-num"><span class="trust-num-accent">12</span>,400+</div>
+        <div class="trust-label">Successful adoptions<br>across the country</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num"><span class="trust-num-accent">240</span>+</div>
+        <div class="trust-label">Partner shelters<br>and rescue groups</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num"><span class="trust-num-accent">98</span>%</div>
+        <div class="trust-label">Family satisfaction<br>rate at 12 months</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num"><span class="trust-num-accent">48</span>hr</div>
+        <div class="trust-label">Average time<br>from match to adoption</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header-centered reveal">
+        <span class="section-eyebrow">How It Works</span>
+        <h2 class="display-lg section-title">Simple. Thoughtful. Joyful.</h2>
+        <p class="section-subtitle">We've designed every step of the adoption journey to be effortless, so you can focus on what matters — finding your companion.</p>
+      </div>
+      <div class="process-grid reveal">
+        <div class="process-item">
+          <div class="process-num">01</div>
+          <div class="process-title">Browse & Discover</div>
+          <p class="process-desc">Explore hundreds of pets filtered by type, age, size, and location. Every profile tells their unique story.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">02</div>
+          <div class="process-title">Find Your Match</div>
+          <p class="process-desc">Read their personality, health status, and background. Save favourites and compare at your own pace.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">03</div>
+          <div class="process-title">Apply Online</div>
+          <p class="process-desc">A short, friendly application form. No paperwork piles. We review within 24 hours and connect you with the shelter.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">04</div>
+          <div class="process-title">Welcome Home</div>
+          <p class="process-desc">Meet your new companion. Our team provides post-adoption support to help everyone settle in beautifully.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION STRIP -->
+  <div class="mission-strip">
+    <div class="mission-inner">
+      <div class="mission-content">
+        <span class="section-eyebrow">Our Promise</span>
+        <h2 class="display-lg section-title">Every life matters.<br><span class="serif">Every story counts.</span></h2>
+        <p class="section-subtitle" style="margin-bottom:32px;">We believe adoption is an act of love — not just for the animal, but for the family who opens their door. We're here to make that connection as meaningful as possible.</p>
+        <button class="btn btn-primary btn-lg" onclick="showPage('about')">Read Our Story</button>
+      </div>
+      <div class="mission-visual">
+        <div class="mission-img">
+          <img src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400&q=80" alt="Happy dog">
+        </div>
+        <div class="mission-img" style="margin-top:32px;">
+          <img src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&q=80" alt="Happy cat">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header-centered reveal">
+        <span class="section-eyebrow">Stories</span>
+        <h2 class="display-lg section-title">Families who found their match</h2>
+      </div>
+      <div class="testimonials-grid reveal">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">"We found Maple through Paws & Home three years ago. She changed everything — the house feels like a home now. The process was so thoughtful and personal."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">👩</div>
+            <div>
+              <div class="testimonial-name">Priya Sharma</div>
+              <div class="testimonial-detail">Adopted Maple · Golden Retriever</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">"We were nervous first-time pet owners. The support team walked us through everything. Two years on, Oliver is the soul of our apartment."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">👨</div>
+            <div>
+              <div class="testimonial-name">James & Erin Cole</div>
+              <div class="testimonial-detail">Adopted Oliver · British Shorthair</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">"Within 48 hours of submitting our application, we were meeting Luna at the shelter. The team made it seamless, warm, and genuinely exciting."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">👩</div>
+            <div>
+              <div class="testimonial-name">Sofia Mendes</div>
+              <div class="testimonial-detail">Adopted Luna · Border Collie</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════════
+     LISTINGS PAGE
+══════════════════════════════════════ -->
+<main id="page-listings" class="page" style="padding-top:72px;">
+  <div class="container">
+    <div style="padding:48px 0 32px;">
+      <h1 class="display-xl" style="margin-bottom:8px;">Find a Pet</h1>
+      <p class="text-lg" style="color:var(--gray-500);font-weight:300;">1,794 companions looking for their forever home</p>
+    </div>
+    <div class="filter-section">
+      <div class="filter-bar">
+        <span class="filter-label">Filter by:</span>
+        <button class="filter-chip active" onclick="setFilter(this,'all')">All Pets</button>
+        <button class="filter-chip" onclick="setFilter(this,'dog')">🐕 Dogs</button>
+        <button class="filter-chip" onclick="setFilter(this,'cat')">🐈 Cats</button>
+        <button class="filter-chip" onclick="setFilter(this,'rabbit')">🐰 Rabbits</button>
+        <button class="filter-chip" onclick="setFilter(this,'other')">🐦 Other</button>
+        <div class="filter-select-wrap" style="margin-left:auto;">
+          <select class="filter-select">
+            <option>Sort: Best Match</option>
+            <option>Newest First</option>
+            <option>Age: Youngest</option>
+            <option>Age: Oldest</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:32px;padding:40px 0 80px;">
+      <!-- Sidebar Filters -->
+      <aside style="width:220px;flex-shrink:0;">
+        <div style="position:sticky;top:96px;">
+          <div style="margin-bottom:28px;">
+            <div style="font-size:.8125rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px;">Age</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;">
+                <input type="checkbox" style="accent-color:var(--gray-900)"> Under 1 year
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;">
+                <input type="checkbox" style="accent-color:var(--gray-900)" checked> 1–3 years
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;">
+                <input type="checkbox" style="accent-color:var(--gray-900)"> 3–7 years
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;">
+                <input type="checkbox" style="accent-color:var(--gray-900)"> Senior (7+)
+              </label>
+            </div>
+          </div>
+          <div class="divider" style="margin-bottom:28px;"></div>
+          <div style="margin-bottom:28px;">
+            <div style="font-size:.8125rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px;">Gender</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;"><input type="checkbox" style="accent-color:var(--gray-900)"> Male</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;"><input type="checkbox" style="accent-color:var(--gray-900)"> Female</label>
+            </div>
+          </div>
+          <div class="divider" style="margin-bottom:28px;"></div>
+          <div style="margin-bottom:28px;">
+            <div style="font-size:.8125rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px;">Size</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;"><input type="checkbox" style="accent-color:var(--gray-900)"> Small</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;"><input type="checkbox" style="accent-color:var(--gray-900)"> Medium</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--gray-700);cursor:pointer;"><input type="checkbox" style="accent-color:var(--gray-900)"> Large</label>
+            </div>
+          </div>
+          <div class="divider" style="margin-bottom:24px;"></div>
+          <button class="btn btn-secondary-gray btn-sm" style="width:100%;">Reset Filters</button>
+        </div>
+      </aside>
+      <!-- Pet Grid -->
+      <div style="flex:1;">
+        <div class="pets-grid-wide" id="listings-grid" style="display:grid;"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════
+     ADOPT PAGE
+══════════════════════════════════════ -->
+<main id="page-adopt" class="page" style="padding-top:72px;background:var(--gray-25);min-height:100svh;">
+  <div class="container" style="padding-top:56px;padding-bottom:80px;">
+    <div style="text-align:center;max-width:540px;margin:0 auto 48px;">
+      <span class="section-eyebrow">Adoption Application</span>
+      <h1 class="display-lg" style="margin-bottom:12px;">Start your journey</h1>
+      <p style="font-size:1rem;color:var(--gray-500);font-weight:300;">Complete a short application and we'll match you with your perfect companion within 24 hours.</p>
+    </div>
+    <div class="adoption-form">
+      <div class="progress-bar-wrap">
+        <div class="progress-steps">
+          <div class="progress-step active" id="step-1">
+            <div class="progress-dot">1</div>
+            <div class="progress-step-label">About You</div>
+          </div>
+          <div class="progress-step" id="step-2">
+            <div class="progress-dot">2</div>
+            <div class="progress-step-label">Your Home</div>
+          </div>
+          <div class="progress-step" id="step-3">
+            <div class="progress-dot">3</div>
+            <div class="progress-step-label">Preferences</div>
+          </div>
+          <div class="progress-step" id="step-4">
+            <div class="progress-dot">4</div>
+            <div class="progress-step-label">Review</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="form-fieldset active" id="fieldset-1">
+        <h3 class="display-md" style="margin-bottom:6px;">Tell us about yourself</h3>
+        <p style="font-size:.875rem;color:var(--gray-500);margin-bottom:28px;">This helps us find the best match for your lifestyle.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Priya">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Sharma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="priya@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-nav">
+          <span></span>
+          <button class="btn btn-primary btn-lg" onclick="nextStep(1)">Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="form-fieldset" id="fieldset-2">
+        <h3 class="display-md" style="margin-bottom:6px;">Your living situation</h3>
+        <p style="font-size:.875rem;color:var(--gray-500);margin-bottom:28px;">Helps us ensure a great fit for both you and your future pet.</p>
+        <div class="form-group">
+          <label class="form-label">Home Type</label>
+          <select class="form-select">
+            <option value="">Select home type</option>
+            <option>Apartment</option>
+            <option>House with yard</option>
+            <option>House without yard</option>
+            <option>Townhouse</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Do you rent or own?</label>
+          <select class="form-select">
+            <option value="">Select one</option>
+            <option>I own my home</option>
+            <option>I rent — landlord allows pets</option>
+            <option>I rent — need to check</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Other pets at home?</label>
+          <select class="form-select">
+            <option value="">Select one</option>
+            <option>No other pets</option>
+            <option>Dogs</option>
+            <option>Cats</option>
+            <option>Multiple pets</option>
+          </select>
+        </div>
+        <div class="form-nav">
+          <button class="btn btn-ghost btn-lg" onclick="prevStep(2)">← Back</button>
+          <button class="btn btn-primary btn-lg" onclick="nextStep(2)">Continue <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form-fieldset" id="fieldset-3">
+        <h3 class="display-md" style="margin-bottom:6px;">What are you looking for?</h3>
+        <p style="font-size:.875rem;color:var(--gray-500);margin-bottom:28px;">The more you share, the better we can match you.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Pet Type</label>
+            <select class="form-select">
+              <option value="">Any</option>
+              <option>Dog</option>
+              <option>Cat</option>
+              <option>Rabbit</option>
+              <option>Bird</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age Preference</label>
+            <select class="form-select">
+              <option value="">No preference</option>
+              <option>Puppy / Kitten</option>
+              <option>Young (1–3 yrs)</option>
+              <option>Adult (3–7 yrs)</option>
+              <option>Senior (7+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tell us a bit more <span style="font-weight:400;color:var(--gray-400)">(optional)</span></label>
+          <textarea class="form-textarea" placeholder="E.g. I work from home, have young children, love outdoor activities..."></textarea>
+        </div>
+        <div class="form-nav">
+          <button class="btn btn-ghost btn-lg" onclick="prevStep(3)">← Back</button>
+          <button class="btn btn-primary btn-lg" onclick="nextStep(3)">Review Application <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="form-fieldset" id="fieldset-4">
+        <h3 class="display-md" style="margin-bottom:6px;">Review & Submit</h3>
+        <p style="font-size:.875rem;color:var(--gray-500);margin-bottom:28px;">Everything looks good — submit your application and we'll be in touch within 24 hours.</p>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;">
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:48px;height:48px;background:var(--gray-900);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:white;font-size:1.25rem;">✓</div>
+            <div>
+              <div style="font-size:.875rem;font-weight:600;color:var(--gray-900);margin-bottom:4px;">Application Ready</div>
+              <div style="font-size:.8125rem;color:var(--gray-500);line-height:1.6;">Your preferences have been recorded. Our matching team will review your application and reach out with tailored recommendations.</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--warm-50);border:1px solid var(--warm-100);border-radius:var(--radius-md);padding:16px;margin-bottom:28px;">
+          <div style="font-size:.8125rem;color:var(--warm-700);line-height:1.6;">
+            <strong>What happens next:</strong> We'll review your application, match you with available pets, and send a personalised selection to your email within 24 hours.
+          </div>
+        </div>
+        <div class="form-nav">
+          <button class="btn btn-ghost btn-lg" onclick="prevStep(4)">← Back</button>
+          <button class="btn btn-warm btn-lg" onclick="submitForm()">Submit Application 🐾</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="form-fieldset" id="fieldset-success">
+        <div class="success-state">
+          <div class="success-icon">🎉</div>
+          <h3 class="display-md" style="margin-bottom:8px;">Application Submitted!</h3>
+          <p style="font-size:1rem;color:var(--gray-500);max-width:360px;margin:0 auto 32px;line-height:1.7;">We've received your application and will be in touch within 24 hours with your matched companions.</p>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <button class="btn btn-primary btn-lg" onclick="showPage('listings')">Browse More Pets</button>
+            <button class="btn btn-secondary-gray btn-lg" onclick="showPage('home')">Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════
+     ABOUT PAGE
+══════════════════════════════════════ -->
+<main id="page-about" class="page">
+  <div class="about-hero">
+    <div class="container">
+      <div style="max-width:640px;">
+        <span style="font-size:.8125rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-400);display:block;margin-bottom:20px;">Our Mission</span>
+        <h1 class="display-xl" style="color:var(--white);margin-bottom:24px;line-height:1.1;">
+          We believe every animal<br>
+          <span style="font-family:var(--font-serif);font-style:italic;color:var(--warm-300);">deserves a loving home.</span>
+        </h1>
+        <p style="font-size:1.125rem;color:var(--gray-300);font-weight:300;line-height:1.75;max-width:520px;">Founded in 2019, Paws & Home was built to remove the friction from pet adoption and replace it with warmth, clarity, and trust.</p>
+      </div>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:96px;">
+        <div>
+          <span class="section-eyebrow">Who We Are</span>
+          <h2 class="display-lg section-title">Built by animal lovers,<br>designed for families.</h2>
+          <p style="color:var(--gray-500);line-height:1.8;font-weight:300;margin-bottom:20px;">We started with a simple belief: adopting a pet should feel as joyful as having one. Too many great animals sat in shelters while families struggled through outdated, frustrating processes.</p>
+          <p style="color:var(--gray-500);line-height:1.8;font-weight:300;">So we built something better — a platform that is calm, clear, and full of heart.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;border-radius:var(--radius-xl);overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=400&q=80" alt="Dog" style="aspect-ratio:1;object-fit:cover;">
+          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80" alt="Dog" style="aspect-ratio:1;object-fit:cover;">
+          <img src="https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?w=400&q=80" alt="Cat" style="aspect-ratio:1;object-fit:cover;">
+          <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&q=80" alt="Dog" style="aspect-ratio:1;object-fit:cover;">
+        </div>
+      </div>
+
+      <!-- Partner Shelters -->
+      <div>
+        <div class="section-header-centered" style="margin-bottom:40px;">
+          <span class="section-eyebrow">Our Partners</span>
+          <h2 class="display-lg section-title">240+ trusted shelters</h2>
+          <p class="section-subtitle">We work with vetted, compassionate shelters and rescue organisations across the country.</p>
+        </div>
+        <div class="shelters-grid">
+          <div class="shelter-card">
+            <div class="shelter-logo">🏠</div>
+            <div style="font-size:1rem;font-weight:600;color:var(--gray-900);margin-bottom:4px;">Happy Tails Shelter</div>
+            <div style="font-size:.875rem;color:var(--gray-500);margin-bottom:12px;">Mumbai, Maharashtra</div>
+            <div class="badge badge-success"><span class="badge-dot"></span>240 pets available</div>
+          </div>
+          <div class="shelter-card">
+            <div class="shelter-logo">🐾</div>
+            <div style="font-size:1rem;font-weight:600;color:var(--gray-900);margin-bottom:4px;">Paws of Hope</div>
+            <div style="font-size:.875rem;color:var(--gray-500);margin-bottom:12px;">Bangalore, Karnataka</div>
+            <div class="badge badge-success"><span class="badge-dot"></span>184 pets available</div>
+          </div>
+          <div class="shelter-card">
+            <div class="shelter-logo">❤️</div>
+            <div style="font-size:1rem;font-weight:600;color:var(--gray-900);margin-bottom:4px;">Second Chance Rescue</div>
+            <div style="font-size:.875rem;color:var(--gray-500);margin-bottom:12px;">Delhi, NCR</div>
+            <div class="badge badge-success"><span class="badge-dot"></span>312 pets available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════════════════════════════════
+     PET DETAIL MODAL
+══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal" onclick="closeModalOnBackdrop(event)">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-grid">
+      <div class="modal-gallery">
+        <div class="modal-img-main">
+          <img src="" alt="" id="modal-img-main">
+        </div>
+        <div class="modal-img-thumbs" id="modal-thumbs"></div>
+      </div>
+      <div class="modal-body">
+        <div id="modal-badge-row" class="modal-tags"></div>
+        <h2 class="display-md" id="modal-name" style="margin-bottom:4px;"></h2>
+        <p style="font-size:.9375rem;color:var(--gray-500);" id="modal-breed"></p>
+        <div class="modal-traits" id="modal-traits"></div>
+        <div class="divider" style="margin:16px 0;"></div>
+        <p class="modal-story" id="modal-story"></p>
+        <div class="modal-cta">
+          <button class="btn btn-primary btn-lg" style="flex:1;" onclick="showPage('adopt');closeModal()">Adopt Now 🐾</button>
+          <button class="btn btn-secondary-gray btn-lg" onclick="closeModal()">Save for Later</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--gray-400);text-align:center;margin-top:14px;">Managed by Happy Tails Shelter · Available for in-person visits</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <a href="#" class="logo" onclick="showPage('home')" style="color:white;">
+            <div class="logo-mark">🐾</div>
+            Paws & Home
+          </a>
+        </div>
+        <p>A premium platform dedicated to connecting loving families with animals who deserve a second chance at joy.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link">𝕏</a>
+          <a href="#" class="footer-social-link">in</a>
+          <a href="#" class="footer-social-link">📷</a>
+          <a href="#" class="footer-social-link">f</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Adopt</div>
+        <div class="footer-col-links">
+          <a href="#" class="footer-link" onclick="showPage('listings')">Browse Pets</a>
+          <a href="#" class="footer-link">Dogs</a>
+          <a href="#" class="footer-link">Cats</a>
+          <a href="#" class="footer-link">Other Animals</a>
+          <a href="#" class="footer-link" onclick="showPage('adopt')">Start Application</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-col-links">
+          <a href="#" class="footer-link" onclick="showPage('about')">About Us</a>
+          <a href="#" class="footer-link">Our Shelters</a>
+          <a href="#" class="footer-link">Success Stories</a>
+          <a href="#" class="footer-link">Blog</a>
+          <a href="#" class="footer-link">Careers</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-col-links">
+          <a href="#" class="footer-link">Help Centre</a>
+          <a href="#" class="footer-link">Adoption Guide</a>
+          <a href="#" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">For Shelters</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Paws & Home. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#" class="footer-link">Privacy</a>
+        <a href="#" class="footer-link">Terms</a>
+        <a href="#" class="footer-link">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── PET DATA ───
+const PETS = [
+  { id:1, name:'Biscuit', breed:'Golden Retriever', type:'dog', age:'2 yrs', gender:'Male', size:'Large', location:'Mumbai', health:'Vaccinated', img:'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80', tags:['Friendly','Playful','Good w/ kids'], story:'Biscuit came to us after his previous family relocated abroad. He adores belly rubs, long walks, and has a particular fondness for stolen socks. He would thrive in an active home with a yard.' },
+  { id:2, name:'Luna', breed:'Border Collie', type:'dog', age:'1 yr', gender:'Female', size:'Medium', location:'Bangalore', health:'Vaccinated', img:'https://images.unsplash.com/photo-1552053831-71594a27632d?w=500&q=80', tags:['Energetic','Smart','Loyal'], story:'Luna is whip-smart and full of energy. She learns commands in minutes and thrives with mental stimulation. A first-time dog owner with patience will be rewarded endlessly.' },
+  { id:3, name:'Oliver', breed:'British Shorthair', type:'cat', age:'3 yrs', gender:'Male', size:'Small', location:'Delhi', health:'Neutered', img:'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80', tags:['Calm','Independent','Gentle'], story:'Oliver is the picture of quiet dignity. He\'ll find the sunniest spot in any room, observe proceedings with great interest, and occasionally deign to sit on your lap. Perfect for apartment living.' },
+  { id:4, name:'Mochi', breed:'Ragdoll', type:'cat', age:'2 yrs', gender:'Female', size:'Small', location:'Hyderabad', health:'Spayed', img:'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80', tags:['Affectionate','Quiet','Loves cuddles'], story:'Mochi is the softest cat you\'ll ever hold — in temperament and fur. She follows her favourite person from room to room and falls asleep in your arms without complaint.' },
+  { id:5, name:'Pepper', breed:'Beagle Mix', type:'dog', age:'4 yrs', gender:'Male', size:'Medium', location:'Chennai', health:'Vaccinated', img:'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=500&q=80', tags:['Curious','Gentle','Family-friendly'], story:'Pepper is the neighbourhood ambassador — he makes friends everywhere he goes. He\'s great with children, manageable on a leash, and his nose will take you on adventures you never planned.' },
+  { id:6, name:'Pearl', breed:'Holland Lop Rabbit', type:'rabbit', age:'1 yr', gender:'Female', size:'Small', location:'Pune', health:'Vaccinated', img:'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=500&q=80', tags:['Gentle','Quiet','Curious'], story:'Pearl is the perfect companion for a quieter home. She loves exploring, fresh greens, and the occasional gentle stroke behind her enormous ears.' },
+  { id:7, name:'Atlas', breed:'Labrador', type:'dog', age:'1 yr', gender:'Male', size:'Large', location:'Kolkata', health:'Vaccinated', img:'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=500&q=80', tags:['Loyal','Energetic','Trainable'], story:'Atlas arrived as a young stray with zero experience of indoor life. He\'s since become a model housemate — curious, kind, and absolutely besotted with tennis balls.' },
+  { id:8, name:'Cleo', breed:'Abyssinian', type:'cat', age:'5 yrs', gender:'Female', size:'Small', location:'Ahmedabad', health:'Spayed', img:'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80', tags:['Playful','Curious','Athletic'], story:'Cleo has the energy of a kitten and the grace of a ballerina. She will rearrange your shelves, supervise your video calls, and keep your mornings interesting.' },
+];
+
+// ─── STATE ───
+let currentFilter = 'all';
+
+// ─── PAGE NAV ───
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'listings') renderListings();
+  if (page === 'home') renderFeatured();
+}
+
+// ─── RENDER FEATURED ───
+function renderFeatured() {
+  const grid = document.getElementById('featured-pets');
+  if (!grid) return;
+  const featured = PETS.slice(0, 3);
+  grid.innerHTML = featured.map(p => petCard(p)).join('');
+}
+
+// ─── RENDER LISTINGS ───
+function renderListings() {
+  const grid = document.getElementById('listings-grid');
+  if (!grid) return;
+  const filtered = currentFilter === 'all' ? PETS : PETS.filter(p => p.type === currentFilter);
+  grid.innerHTML = filtered.map(p => petCard(p)).join('');
+}
+
+// ─── PET CARD TEMPLATE ───
+function petCard(p) {
+  return `
+  <div class="pet-card" onclick="openModal(${p.id})">
+    <div class="pet-card-img-wrap">
+      <img src="${p.img}" alt="${p.name}" loading="lazy">
+      <div class="pet-card-tag">
+        <span class="badge badge-success"><span class="badge-dot"></span>Available</span>
+      </div>
+      <div class="pet-card-favorite">♡</div>
+    </div>
+    <div class="pet-card-body">
+      <div class="pet-card-meta">
+        <div class="pet-card-name">${p.name}</div>
+        <span class="badge badge-gray-modern">${p.age}</span>
+      </div>
+      <div class="pet-card-breed">${p.breed}</div>
+      <div class="pet-card-attrs">
+        ${p.tags.slice(0,2).map(t => `<span class="pet-attr-chip">${t}</span>`).join('')}
+        <span class="pet-attr-chip">${p.size}</span>
+      </div>
+      <div class="pet-card-footer">
+        <div class="pet-card-location">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${p.location}
+        </div>
+        <button class="btn btn-secondary-gray btn-xs">View Details</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── MODAL ───
+function openModal(id) {
+  const p = PETS.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modal-img-main').src = p.img;
+  document.getElementById('modal-img-main').alt = p.name;
+  document.getElementById('modal-name').textContent = p.name;
+  document.getElementById('modal-breed').textContent = p.breed;
+  document.getElementById('modal-badge-row').innerHTML = `
+    <span class="badge badge-success"><span class="badge-dot"></span>Available</span>
+    <span class="badge badge-gray-modern">${p.type}</span>
+    <span class="badge badge-warm">${p.health}</span>`;
+  document.getElementById('modal-traits').innerHTML = `
+    <div class="modal-trait"><div class="modal-trait-label">Age</div><div class="modal-trait-value">${p.age}</div></div>
+    <div class="modal-trait"><div class="modal-trait-label">Gender</div><div class="modal-trait-value">${p.gender}</div></div>
+    <div class="modal-trait"><div class="modal-trait-label">Size</div><div class="modal-trait-value">${p.size}</div></div>
+    <div class="modal-trait"><div class="modal-trait-label">Location</div><div class="modal-trait-value">${p.location}</div></div>`;
+  document.getElementById('modal-story').textContent = p.story;
+  document.getElementById('modal-thumbs').innerHTML = [p.img, p.img, p.img].map(src => `
+    <div class="modal-img-thumb"><img src="${src}" alt=""></div>`).join('');
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnBackdrop(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+// ─── FILTERS ───
+function setFilter(btn, type) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = type;
+  renderListings();
+}
+
+// ─── ADOPTION FORM ───
+let currentFormStep = 1;
+function nextStep(step) {
+  document.getElementById('fieldset-' + step).classList.remove('active');
+  document.getElementById('step-' + step).classList.remove('active');
+  document.getElementById('step-' + step).classList.add('completed');
+  const next = step + 1;
+  document.getElementById('fieldset-' + next).classList.add('active');
+  document.getElementById('step-' + next).classList.add('active');
+  currentFormStep = next;
+}
+function prevStep(step) {
+  document.getElementById('fieldset-' + step).classList.remove('active');
+  document.getElementById('step-' + step).classList.remove('active');
+  const prev = step - 1;
+  document.getElementById('fieldset-' + prev).classList.add('active');
+  document.getElementById('step-' + prev).classList.add('active');
+  document.getElementById('step-' + step).classList.remove('completed');
+  currentFormStep = prev;
+}
+function submitForm() {
+  document.getElementById('fieldset-4').classList.remove('active');
+  document.getElementById('fieldset-success').classList.add('active');
+  [1,2,3,4].forEach(i => {
+    document.getElementById('step-' + i).classList.remove('active');
+    document.getElementById('step-' + i).classList.add('completed');
+  });
+}
+
+// ─── HEADER SCROLL ───
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('header');
+  if (window.scrollY > 20) h.classList.add('scrolled');
+  else h.classList.remove('scrolled');
+});
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── INIT ───
+renderFeatured();
+</script>
+</body>
+</html>
